@@ -67,12 +67,12 @@ namespace SearchModels.Models
             //Console.WriteLine("    System Directory: " + OS.SystemFolder + Environment.NewLine + Environment.NewLine);
 
             // RAM
-            Console.WriteLine("RAM Related:" + Environment.NewLine);
-            Console.WriteLine("    Total Physical Memory (in bytes): " + Ram.TotalPhysicalMemory + Environment.NewLine);
+            //Console.WriteLine("RAM Related:" + Environment.NewLine);
+            //Console.WriteLine("    Total Physical Memory (in bytes): " + Ram.TotalPhysicalMemory + Environment.NewLine);
             newInfo.Memory = Ram.TotalPhysicalMemory.ToMegaBytes().ToString("n2") + " Mb";
 
             // Harddisk
-            Console.WriteLine("HardDisk Related:" + Environment.NewLine);
+            //Console.WriteLine("HardDisk Related:" + Environment.NewLine);
             newInfo.FreeSpace = HardDisk.GetFreeSpace(@"C:\", DiskSpaceFlags.TotalNumberOfFreeBytes).ToString("n2") + " bytes";
             return newInfo;
         }

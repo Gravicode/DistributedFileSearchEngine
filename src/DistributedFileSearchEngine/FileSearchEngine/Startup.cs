@@ -20,10 +20,7 @@ public class Startup
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services)
     {
-        //services.AddRazorPages();
-        //services.AddServerSideBlazor();
-        //services.AddSingleton<WeatherForecastService>();
-        //services.AddSingleton<TodoService>();
+      
         services.AddCors();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
@@ -72,9 +69,7 @@ public class Startup
 
         app.UseEndpoints(endpoints =>
         {
-            //endpoints.MapBlazorHub();
-            //endpoints.MapFallbackToPage("/_Host");
-
+           
             endpoints.MapGet("/getinfo", async () =>
             {
                 //var grainFactory = app.ApplicationServices.GetRequiredService<IClusterClient>();
@@ -99,7 +94,7 @@ public class Startup
                 // Call the grain and print the result to the console
                 var result = await friend.SearchFile(keyword);
                 return result;
-                //Console.WriteLine("\n\n{0}\n\n", result.ToString());
+              
             })
        .WithName("Search");
 
