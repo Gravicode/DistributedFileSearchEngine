@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.Ram
 {
 
 
@@ -187,7 +187,7 @@ namespace SystemInfoLib.Windows
             /// </summary>
             internal MemoryStatusEx()
             {
-                this.dwLength = (uint) Marshal.SizeOf(this);
+                dwLength = (uint)Marshal.SizeOf(this);
             }
         }
 

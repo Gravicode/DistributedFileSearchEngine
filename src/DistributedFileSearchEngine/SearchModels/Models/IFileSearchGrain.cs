@@ -1,10 +1,15 @@
 ﻿using Orleans;
 
-namespace FileSearchEngine.Models
+namespace SearchModels.Models
 {
+    public enum Folders
+    {
+        Documents,Musics,Videos,Desktop,Pictures
+    }
     public interface IFileSearchGrain : IGrainWithStringKey
     {
         Task<FileSearchInfo[]> SearchFile(string Keyword);
+        Task<FileSearchInfo[]> SearchFile(string Keyword,Folders Folder);
     }
 
     public class FileSearchInfo

@@ -1,0 +1,109 @@
+﻿@page "/search"
+@using Newtonsoft.Json
+@using SearchModels
+@using SearchModels.Models
+@inject HttpClient Http
+
+<PageTitle>Test Search Page</PageTitle>
+
+<h3>SearchPage</h3>
+
+<div>
+  <div class="form-group">
+    <label for="keyword">Keyword</label>
+    <input type="text" @bind="keyword" class="form-control" id="exampleInputEmail1" aria-describedby="keywordhelp" placeholder="Enter keyword">
+    <small id="keywordhelp" class="form-text text-muted">type your search keyword here.</small>
+  </div>
+  <button type="button" @onclick="CheckClient" class="btn btn-info">Check Connected Cluster</button>
+  <button type="button" @onclick="GoSearch" class="btn btn-primary">Go</button>
+</div>
+
+@if (info != null)
+{
+    <div class="alert-success alert">
+        <ul>
+            <li>Host: @info.MachineName</li>
+            <li>OS: @info.OSName</li>
+            <li>Processor: @info.ProcName</li>
+            <li>Cores: @info.ProcCores</li>
+            <li>Speed: @info.ProcSpeed</li>
+            <li>Memory: @info.Memory</li>
+            <li>Freespace: @info.FreeSpace</li>
+        </ul>
+    </div>
+}
+
+@if (files != null)
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>No</th>
+            <th>File</th>
+            <th>Directory</th>
+        </tr>
+    </thead>    
+    <tbody>
+        @{
+            var counter = 1;
+        }
+        @foreach(var item in files){
+        <tr>
+            <td>
+                @(counter++)
+            </td>
+            <td>
+                @item.FullName
+            </td>
+            <td>
+                @item.Directory
+            </td>
+        </tr>
+        }
+    </tbody>
+    </table>
+}
+
+@code {
+    DeviceInfo info = null;
+    FileSearchInfo[] files = null;
+    string HostUrl = "https://localhost:7248";
+    string keyword;
+    async Task CheckClient()
+    {
+        try
+        {
+            var res = await Http.GetAsync($"{HostUrl}/getinfo");
+            if (res.IsSuccessStatusCode)
+            {
+
+                var data = await res.Content.ReadAsStringAsync();
+                if (data != null)
+                    info = JsonConvert.DeserializeObject<DeviceInfo>(data);
+
+            }
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+    
+    async Task GoSearch()
+    {
+        try
+        {
+            var res = await Http.GetAsync($"{HostUrl}/search/{keyword}");
+            if (res.IsSuccessStatusCode)
+            {
+
+                var data = await res.Content.ReadAsStringAsync();
+                if (data != null)
+                    files = JsonConvert.DeserializeObject<FileSearchInfo[]>(data);
+
+            }
+        }catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }
+}

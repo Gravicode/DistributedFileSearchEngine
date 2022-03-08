@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSearchEngine.Models
+namespace SearchModels.Models
 {
     public class DeviceInfoGrain : Grain, IDeviceInfoGrain
     {
         public Task<DeviceInfo> GetInfo()
         {
             var info = DeviceInfo.GetDeviceInfo();
-            return Task.FromResult( info);
+            return Task.FromResult(info);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.Bios
 {
     /// <summary>
     /// Class for retrieving information related to the BIOS

@@ -1,7 +1,7 @@
 ﻿
-using FileSearchEngine.Models;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Orleans;
+using SearchModels.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -24,6 +24,7 @@ public class Startup
         //services.AddServerSideBlazor();
         //services.AddSingleton<WeatherForecastService>();
         //services.AddSingleton<TodoService>();
+        services.AddCors();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         
@@ -45,6 +46,11 @@ public class Startup
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseCors(x => x
+                 .AllowAnyMethod()
+                 .AllowAnyHeader()
+                 .SetIsOriginAllowed(origin => true) // allow any origin
+                 .AllowCredentials()); // allow credentials
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
@@ -71,26 +77,28 @@ public class Startup
 
             endpoints.MapGet("/getinfo", async () =>
             {
-                var grainFactory = app.ApplicationServices.GetRequiredService<IClusterClient>();
+                //var grainFactory = app.ApplicationServices.GetRequiredService<IClusterClient>();
+                var grainFactory = app.ApplicationServices.GetRequiredService<IGrainFactory>();
                 // Get a reference to the HelloGrain grain with the key "friend".
                 var friend = grainFactory.GetGrain<IDeviceInfoGrain>(new Guid().ToString());
 
                 // Call the grain and print the result to the console
                 var result = await friend.GetInfo();
-                return Task.FromResult(result);
+                return result;
                 //Console.WriteLine("\n\n{0}\n\n", result.ToString());
             })
        .WithName("GetInfo");
             
             endpoints.MapGet("/search/{keyword}", async (string keyword) =>
             {
-                var grainFactory = app.ApplicationServices.GetRequiredService<IClusterClient>();
+                //var grainFactory = app.ApplicationServices.GetRequiredService<IClusterClient>();
+                var grainFactory = app.ApplicationServices.GetRequiredService<IGrainFactory>();
                 // Get a reference to the HelloGrain grain with the key "friend".
                 var friend = grainFactory.GetGrain<IFileSearchGrain>(new Guid().ToString());
 
                 // Call the grain and print the result to the console
                 var result = await friend.SearchFile(keyword);
-                return Task.FromResult(result);
+                return result;
                 //Console.WriteLine("\n\n{0}\n\n", result.ToString());
             })
        .WithName("Search");

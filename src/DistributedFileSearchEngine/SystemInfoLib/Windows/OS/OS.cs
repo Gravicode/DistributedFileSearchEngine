@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Win32;
 
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.OS
 {
     /// <summary>
     /// Class for getting information related to the OS.
@@ -9,7 +9,7 @@ namespace SystemInfoLib.Windows
     public sealed class OS
     {
         #region Properties
-        
+
         // TODO: Add much more properties related to retrieving information, this is way too small
         // for a class related to an OS. There are multiple possibilities here.
 
@@ -90,11 +90,11 @@ namespace SystemInfoLib.Windows
         /// <returns>Value for the specified key</returns>
         private static string RetrieveWindowsInfo(string key)
         {
-            using (RegistryKey rkey =  Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\"))
+            using (RegistryKey rkey = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\"))
             {
                 if (rkey != null)
-                {   
-                   return rkey.GetValue(key).ToString();
+                {
+                    return rkey.GetValue(key).ToString();
                 }
 
                 return "";
@@ -110,11 +110,11 @@ namespace SystemInfoLib.Windows
             RegistryView view = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
             RegistryKey rkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
             rkey = rkey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
-            
+
             if (rkey != null)
             {
                 string csdVersion = rkey.GetValue("CSDVersion").ToString();
-                
+
                 // Close registry key.
                 rkey.Close();
 
@@ -134,19 +134,19 @@ namespace SystemInfoLib.Windows
             // This view is basically what determines which version of the registry the program will access depending
             // on what [x]-bit version of the OS you are running.
             RegistryView view = Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32;
-           
-            RegistryKey rkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view); 
-            byte[] digitalProductId = (byte[]) rkey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion").GetValue("DigitalProductId");
-            
+
+            RegistryKey rkey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, view);
+            byte[] digitalProductId = (byte[])rkey.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion").GetValue("DigitalProductId");
+
             // Close the key, since the data we need is retrieved
             rkey.Close();
 
             const string allowedChars = "BCDFGHJKMPQRTVWXY2346789";
             char[] decodedChars = new char[29];
             byte[] hexPid = new byte[15];
-            
+
             Array.Copy(digitalProductId, 52, hexPid, 0, 15);
-            
+
             for (int i = 29 - 1; i >= 0; i--)
             {
                 if ((i + 1) % 6 == 0)
@@ -158,14 +158,14 @@ namespace SystemInfoLib.Windows
                     int digitMapIndex = 0;
                     for (int j = 14; j >= 0; j--)
                     {
-                        int byteValue = (digitMapIndex << 8) | hexPid[j];
-                        hexPid[j] = (byte) (byteValue / 24);
+                        int byteValue = digitMapIndex << 8 | hexPid[j];
+                        hexPid[j] = (byte)(byteValue / 24);
                         digitMapIndex = byteValue % 24;
                         decodedChars[i] = allowedChars[digitMapIndex];
                     }
                 }
             }
-            
+
             return new string(decodedChars);
         }
 

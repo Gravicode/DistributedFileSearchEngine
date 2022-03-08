@@ -1,5 +1,4 @@
-
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.HardDisk
 {
     /// <summary>
     /// Flags associated for use with GetFreeSpace

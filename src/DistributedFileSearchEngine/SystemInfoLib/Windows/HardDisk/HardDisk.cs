@@ -2,7 +2,7 @@
 
 // TODO: Possibly clean this class up a little ?
 
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.HardDisk
 {
     /// <summary>
     /// Class for getting info for HardDisks

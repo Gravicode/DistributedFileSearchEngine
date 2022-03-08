@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileSearchEngine.Models
+namespace SearchModels.Models
 {
     public interface IDeviceInfoGrain : IGrainWithStringKey
     {

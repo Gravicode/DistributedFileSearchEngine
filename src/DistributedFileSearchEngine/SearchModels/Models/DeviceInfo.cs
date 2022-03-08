@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SystemInfoLib.Windows;
+using SystemInfoLib.Windows.HardDisk;
+using SystemInfoLib.Windows.Processor;
+using SystemInfoLib.Windows.Ram;
 
-namespace FileSearchEngine.Models
+namespace SearchModels.Models
 {
     public class DeviceInfo
     {
@@ -16,7 +19,8 @@ namespace FileSearchEngine.Models
         public string Memory { get; set; }
         public string FreeSpace { get; set; }
         public string OSName { get; set; }
-        public override string ToString() {
+        public override string ToString()
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append($"Machine Name : {MachineName}\n");
             sb.Append($"Processor Name : {ProcName}\n");
@@ -32,7 +36,7 @@ namespace FileSearchEngine.Models
         {
             var newInfo = new DeviceInfo();
             newInfo.OSName = Environment.OSVersion.ToString();
-            newInfo.MachineName = System.Environment.MachineName;
+            newInfo.MachineName = Environment.MachineName;
             // Processor:
             //Console.WriteLine("Processor Related:" + Environment.NewLine);
             newInfo.ProcName = Processor.Name;
@@ -65,11 +69,11 @@ namespace FileSearchEngine.Models
             // RAM
             Console.WriteLine("RAM Related:" + Environment.NewLine);
             Console.WriteLine("    Total Physical Memory (in bytes): " + Ram.TotalPhysicalMemory + Environment.NewLine);
-            newInfo.Memory =  Ram.TotalPhysicalMemory.ToMegaBytes().ToString("n2") + " Mb";
+            newInfo.Memory = Ram.TotalPhysicalMemory.ToMegaBytes().ToString("n2") + " Mb";
 
             // Harddisk
             Console.WriteLine("HardDisk Related:" + Environment.NewLine);
-            newInfo.FreeSpace =  HardDisk.GetFreeSpace(@"C:\", DiskSpaceFlags.TotalNumberOfFreeBytes).ToString("n2") + " bytes";
+            newInfo.FreeSpace = HardDisk.GetFreeSpace(@"C:\", DiskSpaceFlags.TotalNumberOfFreeBytes).ToString("n2") + " bytes";
             return newInfo;
         }
     }

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 
-namespace SystemInfoLib.Windows
+namespace SystemInfoLib.Windows.Processor
 {
     /// <summary>
     /// Class for retrieving information related to the processor
@@ -48,7 +48,7 @@ namespace SystemInfoLib.Windows
         {
             get
             {
-            	return numberOfProcessors;
+                return numberOfProcessors;
             }
         }
 
@@ -152,7 +152,7 @@ namespace SystemInfoLib.Windows
         private static string RetrieveProcessorInfo(string key) //int specificLogicalProcessor)
         {
             // NOTE: Remove the 0 when the functionality to retrieve info from other virtual cores is implemented
-            using(RegistryKey rkey = Registry.LocalMachine.OpenSubKey("HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0")) // + specificLogicalProcessor);
+            using (RegistryKey rkey = Registry.LocalMachine.OpenSubKey("HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0")) // + specificLogicalProcessor);
             {
                 if (!IsMulticore())
                 {
@@ -180,13 +180,13 @@ namespace SystemInfoLib.Windows
 
             switch (sysInfo.uProcessorInfo.wProcessorArchitecture)
             {
-                case (ushort) ProcessorInfo.ProcessorArchitecture.Intel:
+                case (ushort)ProcessorInfo.ProcessorArchitecture.Intel:
                     return "Intel";
 
-                case (ushort) ProcessorInfo.ProcessorArchitecture.IA64:
+                case (ushort)ProcessorInfo.ProcessorArchitecture.IA64:
                     return "Itanium (IA64)";
 
-                case (ushort) ProcessorInfo.ProcessorArchitecture.AMD64:
+                case (ushort)ProcessorInfo.ProcessorArchitecture.AMD64:
                     return "AMD64";
 
                 default:
@@ -208,7 +208,7 @@ namespace SystemInfoLib.Windows
             [DllImport("kernel32.dll")]
             internal static extern void GetSystemInfo([MarshalAs(UnmanagedType.Struct)] ref SystemInfo lpSystemInfo);
 
-#endregion
+            #endregion
 
             #region Structs
 
@@ -219,7 +219,7 @@ namespace SystemInfoLib.Windows
                 /// Used to access the ProcessorInfoUnion struct
                 /// </summary>
                 internal readonly ProcessorInfoUnion uProcessorInfo;
-                
+
                 /// <summary>
                 /// The page size and the granularity of page protection and commitment.
                 /// </summary>
@@ -291,13 +291,13 @@ namespace SystemInfoLib.Windows
                 [Obsolete("Use the wProcessorArchitecture field instead")]
                 [FieldOffset(0)]
                 internal readonly uint dwOemId;
-                
+
                 /// <summary>
                 /// The processor architecture of the installed operating system. 
                 /// </summary>
                 [FieldOffset(0)]
                 internal readonly ushort wProcessorArchitecture;
-                
+
                 /// <summary>
                 /// This member is reserved for future use.
                 /// </summary>
@@ -317,11 +317,11 @@ namespace SystemInfoLib.Windows
             [Obsolete("dwProcessorType shouldn't be used, use wProcessorArchitecture")]
             private enum ProcessorTypes
             {
-                PROCESSOR_INTEL_386     = 386,  // Intel 386
-                PROCESSOR_INTEL_486     = 486,  // Intel 486
+                PROCESSOR_INTEL_386 = 386,  // Intel 386
+                PROCESSOR_INTEL_486 = 486,  // Intel 486
                 PROCESSOR_INTEL_PENTIUM = 586,  // Pentium
-                PROCESSOR_INTEL_IA64    = 2200, // Itanium
-                PROCESSOR_AMD_X8664     = 8664, // AMD64
+                PROCESSOR_INTEL_IA64 = 2200, // Itanium
+                PROCESSOR_AMD_X8664 = 8664, // AMD64
             };
 
             /// <summary>
@@ -329,9 +329,9 @@ namespace SystemInfoLib.Windows
             /// </summary>
             internal enum ProcessorArchitecture : ushort
             {
-                Intel   = 0,
-                IA64    = 6,
-                AMD64   = 9,
+                Intel = 0,
+                IA64 = 6,
+                AMD64 = 9,
                 Unknown = 0xFFFF
             };
 
