@@ -1,4 +1,4 @@
-# DistributedFileSearchEngine
+# Distributed File Search Engine
 This is experimental project how to use Orleans for creating file search engine with distributed computing
 
 Orleans is library for creating distributed computing with .NET, it can run anywhere windows, linux, mac, on-prem, cloud.
